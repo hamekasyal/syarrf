@@ -20,22 +20,80 @@
   </div>
 </div>
 <div class="container">
-  <div class="alert alert-info text-center" role="alert">
-      <a href="" class="alert-link"></a> .
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-info-sign"></span> </h3>
-      
-    </div>
-    <div class="col-md-6">
-      <h3><span class="glyphicon glyphicon-link"></span> </h3>
-      
-      
-      <h3><span class="glyphicon glyphicon-link"></span> </h3>
-      
-    </div>
+  <div class="container">
+      <div class="panel panel-info">
+        <div class="panel-heading"><h1>Harga Steem/Steemdollar</h1><h5>Updates every minute</h5></div>
+        <div class="panel-body">
+          <table class="striped">
+            <thead>
+              <tr>
+                <td width="120">Currency</td>
+                <td width="170">Harga</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td >Steem</td>
+                <td class="blink" id="steem"></td>
+              </tr>
+              <tr>
+                <td>Steem Dollar</td>
+                <td class="blink" id="sbd"></td>
+              </tr>
+              <tr style="border-bottom: 1px solid grey;">
+                <td>Bitcoin</td>
+                <td class="blink" id="btc"></td>
+              </tr>
+			  <tr>
+                <td>Doge</td>
+                <td class="blink" id="dogecoin"></td>
+              </tr>
+              
+            </tbody>
+          </table>
+
+          <script>
+            $.ajaxSetup({async: false}); // must set to synchronous to be able to set the global variables sbd, steem, etc...
+
+            function getPrices() {
+              url = 'https://api.coinmarketcap.com/v1/ticker/steem/?convert=idr';
+              $.getJSON(url, function (data) {
+                steem = parseFloat(data[0].price_idr).toFixed(2);  // convert the string to number and round to 2 decimals
+                steemchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+              url = 'https://api.coinmarketcap.com/v1/ticker/steem-dollars/?convert=idr';
+              $.getJSON(url, function (data) {
+                sbd = parseFloat(data[0].price_idr).toFixed(2);
+                sbdchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+              url = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=idr';
+              $.getJSON(url, function (data) {
+                btc = parseFloat(data[0].price_idr).toFixed(2);
+                btcchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+			  url = 'https://api.coinmarketcap.com/v1/ticker/dogecoin/?convert=idr';
+              $.getJSON(url, function (data) {
+                dogecoin = parseFloat(data[0].price_idr).toFixed(2);
+                dogecoinchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+
+              
+
+              $("#btc").html("Rp." + btc.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (btcchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(btcchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(btcchange) + '%</i>'));
+              $("#sbd").html("Rp." + sbd.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (sbdchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(sbdchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(sbdchange) + '%</i>'));
+              $("#steem").html("Rp." + steem.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (steemchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(steemchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(steemchange) + '%</i>'));
+			  $("#dogecoin").html("Rp." + dogecoin.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (dogecoinchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(dogecoinchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(dogecoinchange) + '%</i>'));
+              $("#steem_per_mvests").html(steem_per_mvests + " STEEM");
+              $("#feed_price").html(feed_price);
+
+            }
+            getPrices(); // get prices
+            setInterval(function () {
+              getPrices();
+              $(".blink").fadeOut("slow").fadeIn(); // fade effect for fun
+            }, 60000); // then get prices every 60 seconds
+          </script>
+        </div>
     
   </div> <!-- row -->
    
