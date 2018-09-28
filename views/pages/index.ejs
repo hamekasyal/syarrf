@@ -19,40 +19,17 @@
     <a type="button" class="btn btn-lg btn-primary" href=""><span class="glyphicon glyphicon-download"></span> </a>
   </div>
 </div>
-<div class="container">
-  <div class="container">
-      <div class="panel panel-info">
-        <div class="panel-heading"><h1>Harga Steem/Steemdollar</h1><h5>Updates every minute</h5></div>
-        <div class="panel-body">
-          <table class="striped">
-            <thead>
-              <tr>
-                <td width="120">Currency</td>
-                <td width="170">Harga</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td >Steem</td>
-                <td class="blink" id="steem"></td>
-              </tr>
-              <tr>
-                <td>Steem Dollar</td>
-                <td class="blink" id="sbd"></td>
-              </tr>
-              <tr style="border-bottom: 1px solid grey;">
-                <td>Bitcoin</td>
-                <td class="blink" id="btc"></td>
-              </tr>
-			  <tr>
-                <td>Doge</td>
-                <td class="blink" id="dogecoin"></td>
-              </tr>
-              
-            </tbody>
-          </table>
-
-          <script>
+<div class="grid-container">
+  <div><div class="blink" id="dogecoin"></div>DOGE</div>
+  <div><div class="blink" id="sbd"></div>SBD</div>
+  <div><div class="blink" id="steem"></div>STEEM</div>  
+  <div><div class="blink" id="btc"></div>BTC</div>
+  <div><div class="blink" id="ethereum"></div>ETH</div>
+  <div><div class="blink" id="ark"></div>ARK</div>
+  <div><div class="blink" id="byteball"></div>ByteBall</div>
+  <div>8</div>
+</div>
+   <script>
             $.ajaxSetup({async: false}); // must set to synchronous to be able to set the global variables sbd, steem, etc...
 
             function getPrices() {
@@ -76,6 +53,22 @@
                 dogecoin = parseFloat(data[0].price_idr).toFixed(2);
                 dogecoinchange = parseFloat(data[0].percent_change_24h).toFixed(2);
               });
+			  url = 'https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=idr';
+              $.getJSON(url, function (data) {
+                ethereum = parseFloat(data[0].price_idr).toFixed(2);
+                ethereumchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+			  url = 'https://api.coinmarketcap.com/v1/ticker/ark/?convert=idr';
+              $.getJSON(url, function (data) {
+                ark = parseFloat(data[0].price_idr).toFixed(2);
+                arkchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+			   url = 'https://api.coinmarketcap.com/v1/ticker/byteball/?convert=idr';
+              $.getJSON(url, function (data) {
+                byteball = parseFloat(data[0].price_idr).toFixed(2);
+                byteballchange = parseFloat(data[0].percent_change_24h).toFixed(2);
+              });
+
 
               
 
@@ -83,6 +76,9 @@
               $("#sbd").html("Rp." + sbd.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (sbdchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(sbdchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(sbdchange) + '%</i>'));
               $("#steem").html("Rp." + steem.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (steemchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(steemchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(steemchange) + '%</i>'));
 			  $("#dogecoin").html("Rp." + dogecoin.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (dogecoinchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(dogecoinchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(dogecoinchange) + '%</i>'));
+			  $("#ethereum").html("Rp." + ethereum.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (ethereumchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(ethereumchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(ethereumchange) + '%</i>'));
+			  $("#ark").html("Rp." + ark.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (arkchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(arkchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(arkchange) + '%</i>'));
+			  $("#byteball").html("Rp." + byteball.replace(/\d(?=(?:\d{3})+\.)/g, '$&,') + " " + (byteballchange > 0 ? '<i style="color:green;">\u2191' + Math.abs(byteballchange) + '%</i>' : '<i style="color:red;">\u2193' + Math.abs(byteballchange) + '%</i>'));
               $("#steem_per_mvests").html(steem_per_mvests + " STEEM");
               $("#feed_price").html(feed_price);
 
@@ -93,10 +89,6 @@
               $(".blink").fadeOut("slow").fadeIn(); // fade effect for fun
             }, 60000); // then get prices every 60 seconds
           </script>
-        </div>
-    
-  </div> <!-- row -->
-   
 </div>
   </div>
 </div>
